@@ -1,3 +1,3 @@
 import ozopython
 
-ozopython.run("test.ozopy")
+ozopython.run("mycode.ozopy")

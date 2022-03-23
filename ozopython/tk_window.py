@@ -24,7 +24,7 @@ class App:
         self.app.grid()
 
         # labels for the window
-        self.heading = Label(self.app, text="Program the Ozobot!", font='arial 40 bold', fg='black',
+        self.heading =Label(self.app, text="Program the Ozobot!", font='arial 40 bold', fg='black',
                              bg='lightblue')
         self.heading.grid()
 
@@ -123,18 +123,19 @@ class App:
             # show the output frame
 
             cv2.imshow('frame', self.frame)
+
             key = cv2.waitKey(1) & 0xFF
 
             # if the `q` key was pressed, grab last frame and order markers then break.
             if key == ord("q"):
                 self.vs.stop()
                 self.last_frame = self.vs.read()
-                (corner, id, rejecteds) = cv2.aruco.detectMarkers(self.last_frame,
+                (corner, self.id, rejecteds) = cv2.aruco.detectMarkers(self.last_frame,
 
                                              arucoDict, parameters=arucoParams)
                 listC = []
                 listB =[]
-                for (markerCorner, markerID) in zip(corner, id):
+                for (markerCorner, markerID) in zip(corner, self.id):
                     # extract the marker corners (which are always returned
                     # in top-left, top-right, bottom-right, and bottom-left
                     # order)
@@ -154,7 +155,7 @@ class App:
 
                     listB.append(cX)
                     listC.append(cY)
-                res_list = list(zip(id, listB, listC))
+                res_list = list(zip(self.id, listB, listC))
                 sorted_list = sorted(res_list, key=lambda x: x[2], reverse=False)
                 print(res_list)
                 print(sorted_list)
@@ -163,8 +164,24 @@ class App:
                 time.sleep(3.0)
                 break
         # do a bit of cleanup
+
         cv2.destroyAllWindows()
+        self.makefile()
         self.vs.stop()
+
+    def makefile(self):
+        f = open("mycode.ozopy", "w")
+        for i in self.id:
+            if i  == 1:
+                f.write("move(10,4)\n")
+            if i == 9:
+                f.write('start\n')
+
+            if i == 3:
+                f.write('move(10,5)\n')
+
+
+
 
 root = Tk()
 b = App(root)
