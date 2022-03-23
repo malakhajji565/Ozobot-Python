@@ -3,12 +3,13 @@ import datetime
 import imutils
 import cv2
 import os
-
+from operator import itemgetter
 
 from imutils.video import VideoStream
 import argparse
 import time
-
+import math
+import numpy as np
 
 class App:
     def __init__(self,master):
@@ -33,8 +34,6 @@ class App:
         self.recognise = Button(self.app, text="Recognise Block", width=20, height=2,
                              command=lambda: self.detect_marker())
         self.recognise.grid()
-
-
 
 
     def detect_marker(self):
@@ -84,6 +83,7 @@ class App:
             (corners, ids, rejected) = cv2.aruco.detectMarkers(self.frame,
                                                                arucoDict, parameters=arucoParams)
 
+
             # verify *at least* one ArUco marker was detected
             if len(corners) > 0:
                 # flatten the ArUco IDs list
@@ -114,7 +114,6 @@ class App:
                     cX = int((topLeft[0] + bottomRight[0]) / 2.0)
                     cY = int((topLeft[1] + bottomRight[1]) / 2.0)
                     cv2.circle(self.frame, (cX, cY), 4, (0, 0, 255), -1)
-
                     # draw the ArUco marker ID on the frame
                     cv2.putText(self.frame, str(markerID),
                                 (topLeft[0], topLeft[1] - 15),
@@ -122,13 +121,47 @@ class App:
                                 0.5, (0, 255, 0), 2)
 
             # show the output frame
+
             cv2.imshow('frame', self.frame)
             key = cv2.waitKey(1) & 0xFF
 
-            # if the `q` key was pressed, break from the loop
+            # if the `q` key was pressed, grab last frame and order markers then break.
             if key == ord("q"):
-                break
+                self.vs.stop()
+                self.last_frame = self.vs.read()
+                (corner, id, rejecteds) = cv2.aruco.detectMarkers(self.last_frame,
 
+                                             arucoDict, parameters=arucoParams)
+                listC = []
+                listB =[]
+                for (markerCorner, markerID) in zip(corner, id):
+                    # extract the marker corners (which are always returned
+                    # in top-left, top-right, bottom-right, and bottom-left
+                    # order)
+                    corner = markerCorner.reshape((4, 2))
+                    (topLeft, topRight, bottomRight, bottomLeft) = corner
+                    # convert each of the (x, y)-coordinate pairs to integers
+                    topRight = (int(topRight[0]), int(topRight[1]))
+                    bottomRight = (int(bottomRight[0]), int(bottomRight[1]))
+                    bottomLeft = (int(bottomLeft[0]), int(bottomLeft[1]))
+                    topLeft = (int(topLeft[0]), int(topLeft[1]))
+
+                    # draw the bounding box of the ArUCo detection
+                    # compute and draw the center (x, y)-coordinates of the
+                    # ArUco marker
+                    cX = int((topLeft[0] + bottomRight[0]) / 2.0)
+                    cY = int((topLeft[1] + bottomRight[1]) / 2.0)
+
+                    listB.append(cX)
+                    listC.append(cY)
+                res_list = list(zip(id, listB, listC))
+                sorted_list = sorted(res_list, key=lambda x: x[2], reverse=False)
+                print(res_list)
+                print(sorted_list)
+                print(list( map(itemgetter(0), sorted_list )))
+
+                time.sleep(3.0)
+                break
         # do a bit of cleanup
         cv2.destroyAllWindows()
         self.vs.stop()
