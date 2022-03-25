@@ -10,6 +10,7 @@ import argparse
 import time
 import math
 import numpy as np
+from playsound import playsound
 
 class App:
     def __init__(self,master):
@@ -31,9 +32,9 @@ class App:
         self.translate = Button(self.app, text="Translate to Ozopy", width=20, height=2, command=lambda : self.detect_marker())
         self.translate.grid()
 
-        self.recognise = Button(self.app, text="Recognise Block", width=20, height=2,
-                             command=lambda: self.detect_marker())
-        self.recognise.grid()
+        self.recognition = Button(self.app, text="Recognise Block", width=20, height=2,
+                             command=lambda: self.recognise())
+        self.recognition.grid()
 
 
     def detect_marker(self):
@@ -168,17 +169,30 @@ class App:
         cv2.destroyAllWindows()
         self.makefile()
         self.vs.stop()
+        return id
+
+    def recognise(self):
+        self.detect_marker()
+        for i in self.id:
+            if i == 9:
+                playsound('Go Forward.mp3')
 
     def makefile(self):
-        f = open("mycode.ozopy", "w")
+        import os.path
+
+        file_name = '/Users/malak/Documents/GitHub/Ozobot-Project/Ozobot-Python/mycode.ozopy'
+        f = open(file_name, "w")
         for i in self.id:
             if i  == 1:
                 f.write("move(10,4)\n")
             if i == 9:
-                f.write('start\n')
-
+                f.write('move(100,40)\n')
             if i == 3:
                 f.write('move(10,5)\n')
+        return file_name
+
+
+
 
 
 
@@ -186,3 +200,4 @@ class App:
 root = Tk()
 b = App(root)
 root.mainloop()
+

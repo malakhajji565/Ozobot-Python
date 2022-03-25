@@ -3,6 +3,7 @@ from tkinter import ttk
 from ozopython.colorLanguageTranslator import ColorLanguageTranslator
 from .ozopython import *
 from tkinter import *
+from .tk_window import App
 
 def run(filename):
     code = ozopython.compile(filename)
