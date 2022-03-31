@@ -157,38 +157,53 @@ class App:
                     listB.append(cX)
                     listC.append(cY)
                 res_list = list(zip(self.id, listB, listC))
-                sorted_list = sorted(res_list, key=lambda x: x[2], reverse=False)
-                print(res_list)
+                #sort by distance from start block and the (x,y) coordinates of its center, we get cX,cY of every marker and sort it
+                #comparingly to centre of start block.
+                sorted_list = sorted(res_list, key=lambda x: x[2], reverse=True)
+                #print(res_list)
                 print(sorted_list)
-                print(list( map(itemgetter(0), sorted_list )))
+                my_id = list(map(itemgetter(0), sorted_list ))
 
                 time.sleep(3.0)
                 break
         # do a bit of cleanup
 
         cv2.destroyAllWindows()
-        self.makefile()
+        self.makefile(my_id)
         self.vs.stop()
-        return id
+
 
     def recognise(self):
         self.detect_marker()
         for i in self.id:
-            if i == 9:
+            if i == 1:
                 playsound('Go Forward.mp3')
 
-    def makefile(self):
+
+
+
+    def makefile(self, id):
         import os.path
 
         file_name = '/Users/malak/Documents/GitHub/Ozobot-Project/Ozobot-Python/mycode.ozopy'
         f = open(file_name, "w")
-        for i in self.id:
-            if i  == 1:
-                f.write("move(10,4)\n")
-            if i == 9:
-                f.write('move(100,40)\n')
-            if i == 3:
+        print(id)
+        #if id[1] !=1 :
+            #print('Insert Start Block')
+        #if id[-1] !=12:
+            #print('Insert end block')
+        for i in range(len(id)-1):
+            if id[i] == 1:
+                continue
+            if id[i] == 2:
+                f.write('move(10,40)\n')
+            if id[i] == 3:
                 f.write('move(10,5)\n')
+            if id[i] == 7 and id[i+1] == 4 or id[i] == 4 and id[i+1] == 7:
+                f.write('move(-100,45)')
+
+
+                
         return file_name
 
 
