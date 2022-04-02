@@ -188,7 +188,7 @@ class App:
         file_name = '/Users/malak/Documents/GitHub/Ozobot-Project/Ozobot-Python/mycode.ozopy'
         f = open(file_name, "w")
         print(id)
-        id = [12,8]
+        id = [7,9,12,8,11,9,14,7,8]
         #if id[1] !=1 :
             #print('Insert Start Block')
         #if id[-1] !=12:
@@ -229,84 +229,58 @@ class App:
                 f.write('move(-100,50)\n')  # move 10 cm backwards
 
             if id[i] == 12 and id[i+1] == 8 or id[i] == 12 and id[i+1] == 8: #loop with 2 repetitions
-                end_index = id.index['14']
-                loop_list = id[i+1:end_index]
+
+                end_index = id.index(14)
+                loop_list = id[i+2:end_index]
+                rest_list = id[end_index:]
                 j = 0
-                while j < len(loop_list):
-                    if loop_list[j] == 11 and loop_list[j+1] == 8 or loop_list[j] == 11 and loop_list[j+1] == 8:
-                        f.write('i =0 \nwhile i < 2:\n\tmove(-20,50)\n\ti=i+1')
+                k =0
+                break
+            i = i + 1
+        while j < len(loop_list):  #takes commands in loop list, from start of loop till end of loop index 14.
 
-                    if loop_list[j] == 11 and loop_list[j+1] == 9 or loop_list[j] == 11 and loop_list[j+1] == 9:
-                        f.write('i =0 \nwhile i < 2:\n\tmove(-50,50)\n\ti=i+1')
+            if loop_list[j] == 11 and loop_list[j+1] == 8 or loop_list[j] == 11 and loop_list[j+1] == 8:
+                f.write('i =0 \nwhile i < 2:\n\tmove(-20,50)\n\ti=i+1\n')
 
-                    if loop_list[j] == 11 and loop_list[j+1] == 10 or loop_list[j] == 11 and loop_list[j+1] == 10:
-                        f.write('i =0 \nwhile i < 2:\n\tmove(-100,50)\n\ti=i+1')
+            if loop_list[j] == 11 and loop_list[j+1] == 9 or loop_list[j] == 11 and loop_list[j+1] == 9:
+                f.write('i =0 \nwhile i < 2:\n\tmove(-50,50)\n\ti=i+1\n')
 
-                    if loop_list[j] == 7 and loop_list[j+1] == 8 or loop_list[j] == 7 and loop_list[j+1] == 8:
-                        f.write('i =0 \nwhile i < 2:\n\tmove(20,50)\n\ti=i+1')
+            if loop_list[j] == 11 and loop_list[j+1] == 10 or loop_list[j] == 11 and loop_list[j+1] == 10:
+                f.write('i =0 \nwhile i < 2:\n\tmove(-100,50)\n\ti=i+1\n')
 
-                    if loop_list[j] == 7 and loop_list[j+1] == 9 or loop_list[j] == 7 and loop_list[j+1] == 9:
-                        f.write('i =0 \nwhile i < 2:\n\tmove(50,50)\n\ti=i+1')
+            if loop_list[j] == 7 and loop_list[j+1] == 8 or loop_list[j] == 7 and loop_list[j+1] == 8:
+                f.write('i =0 \nwhile i < 2:\n\tmove(20,50)\n\ti=i+1\n')
 
-                    if loop_list[j] == 7 and loop_list[j+1] == 10 or loop_list[j] == 7 and loop_list[j+1] == 10:
-                        f.write('i =0 \nwhile i < 2:\n\tmove(100,50)\n\ti=i+1')
+            if loop_list[j] == 7 and loop_list[j+1] == 9 or loop_list[j] == 7 and loop_list[j+1] == 9:
+                f.write('i =0 \nwhile i < 2:\n\tmove(50,50)\n\ti=i+1\n')
 
-                    if loop_list[j] == 2:
-                        f.write('i =0 \nwhile i < 2:\n\twait\n\ti=i+1')
-                    if loop_list[j] == 3:
-                        f.write('i =0 \nwhile i < 2:\n\trotate(90,50)\n\ti=i+1')
-                    if loop_list[j] == 4:
-                        f.write('i =0 \nwhile i < 2:\n\trotate(-90,50)\n\ti=i+1')
-                    if loop_list[j] == 5:
-                        f.write('i =0 \nwhile i < 2:\n\trotate(90,50)\nrotate(90,50)\n\ti=i+1') #u turn left
+            if loop_list[j] == 7 and loop_list[j+1] == 10 or loop_list[j] == 7 and loop_list[j+1] == 10:
+                f.write('i =0 \nwhile i < 2:\n\tmove(100,50)\n\ti=i+1\n')
 
-                    if loop_list[j] == 6:
-                        f.write('i =0 \nwhile i < 2:\n\trotate(90,50)\nrotate(90,50)\n\ti=i+1') # u turn right
+            if loop_list[j] == 2:
+                f.write('i =0 \nwhile i < 2:\n\twait\n\ti=i+1\n')
+            if loop_list[j] == 3:
+                f.write('i =0 \nwhile i < 2:\n\trotate(90,50)\n\ti=i+1\n')
+            if loop_list[j] == 4:
+                f.write('i =0 \nwhile i < 2:\n\trotate(-90,50)\n\ti=i+1\n')
+            if loop_list[j] == 5:
+                f.write('i =0 \nwhile i < 2:\n\trotate(90,50)\nrotate(90,50)\n\ti=i+1\n') #u turn left
 
-                    j = j +1
+            if loop_list[j] == 6:
+                f.write('i =0 \nwhile i < 2:\n\trotate(90,50)\nrotate(90,50)\n\ti=i+1\n') # u turn right
 
-            if id[i] == 12 and id[i + 1] == 13 or id[i] == 12 and id[i + 1] == 13:  # loop with 3 repetitions
-                end_index = id.index['14']
-                loop_list = id[i + 1:end_index]
-                j = 0
-                while j < len(loop_list):
-                    if loop_list[j] == 11 and loop_list[j + 1] == 8 or loop_list[j] == 11 and loop_list[j + 1] == 8:
-                        f.write('i =0 \nwhile i < 3:\n\tmove(-20,50)\n\ti=i+1')
+            j = j +1
 
-                    if loop_list[j] == 11 and loop_list[j + 1] == 9 or loop_list[j] == 11 and loop_list[j + 1] == 9:
-                        f.write('i =0 \nwhile i < 3:\n\tmove(-50,50)\n\ti=i+1')
-
-                    if loop_list[j] == 11 and loop_list[j + 1] == 10 or loop_list[j] == 11 and loop_list[j + 1] == 10:
-                        f.write('i =0 \nwhile i < 3:\n\tmove(-100,50)\n\ti=i+1')
-
-                    if loop_list[j] == 7 and loop_list[j + 1] == 8 or loop_list[j] == 7 and loop_list[j + 1] == 8:
-                        f.write('i =0 \nwhile i < 3:\n\tmove(20,50)\n\ti=i+1')
-
-                    if loop_list[j] == 7 and loop_list[j + 1] == 9 or loop_list[j] == 7 and loop_list[j + 1] == 9:
-                        f.write('i =0 \nwhile i < 3:\n\tmove(50,50)\n\ti=i+1')
-
-                    if loop_list[j] == 7 and loop_list[j + 1] == 10 or loop_list[j] == 7 and loop_list[j + 1] == 10:
-                        f.write('i =0 \nwhile i < 3:\n\tmove(100,50)\n\ti=i+1')
-
-                    if loop_list[j] == 2:
-                        f.write('i =0 \nwhile i < 3:\n\twait\n\ti=i+1')
-                    if loop_list[j] == 3:
-                        f.write('i =0 \nwhile i < 3:\n\trotate(90,50)\n\ti=i+1')
-                    if loop_list[j] == 4:
-                        f.write('i =0 \nwhile i < 3:\n\trotate(-90,50)\n\ti=i+1')
-                    if loop_list[j] == 5:
-                        f.write('i =0 \nwhile i < 3:\n\trotate(90,50)\nrotate(90,50)\n\ti=i+1')  # u turn left
-
-                    if loop_list[j] == 6:
-                        f.write('i =0 \nwhile i < 3:\n\trotate(90,50)\nrotate(90,50)\n\ti=i+1')  # u turn right
-
-                    j = j + 1
+        while k <len(rest_list):
+            if rest_list[k] == 7 and rest_list[k+1] == 8 or rest_list[k] == 7 and rest_list[k+1] == 8:
+                f.write('move(20,50)\n') #move 2cm forward
+            k = k +1
 
 
 
 
 
-        i = i +1
+
 
 
 
