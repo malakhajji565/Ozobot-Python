@@ -11,6 +11,7 @@ import time
 import math
 import numpy as np
 from playsound import playsound
+import os.path
 
 class App:
     def __init__(self,master):
@@ -183,115 +184,101 @@ class App:
 
 
     def makefile(self, id):
-        import os.path
-
         file_name = '/Users/malak/Documents/GitHub/Ozobot-Project/Ozobot-Python/mycode.ozopy'
         f = open(file_name, "w")
         print(id)
-        id = [7,9,12,8,11,9,14,7,8]
-        #if id[1] !=1 :
-            #print('Insert Start Block')
-        #if id[-1] !=12:
-            #print('Insert end block')
-        i = 0
-        while i < len(id):
-            if id[i] == 1:
-                continue
-            if id[i] == 2:
-                f.write('wait\n')
-            if id[i] == 3:
-                f.write('rotate(90,50)\n') #turn left
-            if id[i] == 4:
-                f.write('rotate(-90,50)\n')  # turn right
 
-            if id[i] == 5:
-                f.write('rotate(90,50)\n rotate(90,50)\n')  # u turn left
+        def loop_function(loop_list,repetition):
+            j = 0
+            while j < len(loop_list):  #takes commands in loop list, from start of loop till end of loop index 14.
 
-            if id[i] == 6:
-                f.write('rotate(-90,50)\n rotate(-90,50)\n')  # u turn right
+                if loop_list[j] == 11 and loop_list[j+1] == 8 or loop_list[j] == 11 and loop_list[j+1] == 8:
+                    f.write("i =0 \nwhile i < {}:\n\tmove(-20,50)\n\ti=i+1\n".format(repetition))
 
-            if id[i] == 7 and id[i+1] == 8 or id[i] == 7 and id[i+1] == 8:
-                f.write('move(20,50)\n') #move 2cm forward
+                if loop_list[j] == 11 and loop_list[j+1] == 9 or loop_list[j] == 11 and loop_list[j+1] == 9:
+                    f.write("i =0 \nwhile i < {}:\n\tmove(-50,50)\n\ti=i+1\n".format((repetition)))
 
-            if id[i] == 7 and id[i+1] == 9 or id[i] == 7 and id[i+1] == 9:
-                f.write('move(50,50)\n')  # move 5cm forward
+                if loop_list[j] == 11 and loop_list[j+1] == 10 or loop_list[j] == 11 and loop_list[j+1] == 10:
+                    f.write("i =0 \nwhile i < {}:\n\tmove(-100,50)\n\ti=i+1\n".format(repetition))
 
-            if id[i] == 7 and id[i + 1] == 10 or id[i] == 7 and id[i + 1] == 10:
-                f.write('move(100,50)\n') #move 10 cm
+                if loop_list[j] == 7 and loop_list[j+1] == 8 or loop_list[j] == 7 and loop_list[j+1] == 8:
+                    f.write("i =0 \nwhile i < {}:\n\tmove(20,50)\n\ti=i+1\n".format(repetition))
 
-            if id[i] == 11 and id[i + 1] == 8 or id[i] == 11 and id[i + 1] == 8:
-                f.write('move(-20,50)\n')  # move 2cm backward
+                if loop_list[j] == 7 and loop_list[j+1] == 9 or loop_list[j] == 7 and loop_list[j+1] == 9:
+                    f.write("i =0 \nwhile i < {}:\n\tmove(50,50)\n\ti=i+1\n".format(repetition))
 
-            if id[i] == 11 and id[i + 1] == 9 or id[i] == 11 and id[i + 1] == 9:
-                f.write('move(-50,50)\n')  # move 5cm backwards
+                if loop_list[j] == 7 and loop_list[j+1] == 10 or loop_list[j] == 7 and loop_list[j+1] == 10:
+                    f.write("i =0 \nwhile i < {}:\n\tmove(100,50)\n\ti=i+1\n".format(repetition))
 
-            if id[i] == 11 and id[i + 1] == 10 or id[i] == 11 and id[i + 1] == 10:
-                f.write('move(-100,50)\n')  # move 10 cm backwards
+                if loop_list[j] == 2:
+                    f.write("i =0 \nwhile i < {}:\n\twait\n\ti=i+1\n".format(repetition))
+                if loop_list[j] == 3:
+                    f.write("i =0 \nwhile i < {}:\n\trotate(90,50)\n\ti=i+1\n".format(repetition))
+                if loop_list[j] == 4:
+                    f.write("i =0 \nwhile i < {}:\n\trotate(-90,50)\n\ti=i+1\n".format(repetition))
+                if loop_list[j] == 5:
+                    f.write("i =0 \nwhile i < {}:\n\trotate(90,50)\nrotate(90,50)\n\ti=i+1\n".format(repetition)) #u turn left
 
-            if id[i] == 12 and id[i+1] == 8 or id[i] == 12 and id[i+1] == 8: #loop with 2 repetitions
+                if loop_list[j] == 6:
+                    f.write("i =0 \nwhile i < {}:\n\trotate(90,50)\nrotate(90,50)\n\ti=i+1\n".format(repetition)) # u turn right
 
-                end_index = id.index(14)
-                loop_list = id[i+2:end_index]
-                rest_list = id[end_index:]
-                j = 0
-                k =0
-                break
-            i = i + 1
-        while j < len(loop_list):  #takes commands in loop list, from start of loop till end of loop index 14.
+                j = j +1
 
-            if loop_list[j] == 11 and loop_list[j+1] == 8 or loop_list[j] == 11 and loop_list[j+1] == 8:
-                f.write('i =0 \nwhile i < 2:\n\tmove(-20,50)\n\ti=i+1\n')
+        def translate_ids(id):
+            i = 0
+            while i < len(id):
+                if id[i] == 1:
+                    continue
+                if id[i] == 2:
+                    f.write('wait\n')
+                if id[i] == 3:
+                    f.write('rotate(90,50)\n') #turn left
+                if id[i] == 4:
+                    f.write('rotate(-90,50)\n')  # turn right
 
-            if loop_list[j] == 11 and loop_list[j+1] == 9 or loop_list[j] == 11 and loop_list[j+1] == 9:
-                f.write('i =0 \nwhile i < 2:\n\tmove(-50,50)\n\ti=i+1\n')
+                if id[i] == 5:
+                    f.write('rotate(90,50)\n rotate(90,50)\n')  # u turn left
 
-            if loop_list[j] == 11 and loop_list[j+1] == 10 or loop_list[j] == 11 and loop_list[j+1] == 10:
-                f.write('i =0 \nwhile i < 2:\n\tmove(-100,50)\n\ti=i+1\n')
+                if id[i] == 6:
+                    f.write('rotate(-90,50)\n rotate(-90,50)\n')  # u turn right
 
-            if loop_list[j] == 7 and loop_list[j+1] == 8 or loop_list[j] == 7 and loop_list[j+1] == 8:
-                f.write('i =0 \nwhile i < 2:\n\tmove(20,50)\n\ti=i+1\n')
+                if id[i] == 7 and id[i+1] == 8 or id[i] == 7 and id[i+1] == 8:
+                    f.write('move(20,50)\n') #move 2cm forward
 
-            if loop_list[j] == 7 and loop_list[j+1] == 9 or loop_list[j] == 7 and loop_list[j+1] == 9:
-                f.write('i =0 \nwhile i < 2:\n\tmove(50,50)\n\ti=i+1\n')
+                if id[i] == 7 and id[i+1] == 9 or id[i] == 7 and id[i+1] == 9:
+                    f.write('move(50,50)\n')  # move 5cm forward
 
-            if loop_list[j] == 7 and loop_list[j+1] == 10 or loop_list[j] == 7 and loop_list[j+1] == 10:
-                f.write('i =0 \nwhile i < 2:\n\tmove(100,50)\n\ti=i+1\n')
+                if id[i] == 7 and id[i + 1] == 10 or id[i] == 7 and id[i + 1] == 10:
+                    f.write('move(100,50)\n') #move 10 cm
 
-            if loop_list[j] == 2:
-                f.write('i =0 \nwhile i < 2:\n\twait\n\ti=i+1\n')
-            if loop_list[j] == 3:
-                f.write('i =0 \nwhile i < 2:\n\trotate(90,50)\n\ti=i+1\n')
-            if loop_list[j] == 4:
-                f.write('i =0 \nwhile i < 2:\n\trotate(-90,50)\n\ti=i+1\n')
-            if loop_list[j] == 5:
-                f.write('i =0 \nwhile i < 2:\n\trotate(90,50)\nrotate(90,50)\n\ti=i+1\n') #u turn left
+                if id[i] == 11 and id[i + 1] == 8 or id[i] == 11 and id[i + 1] == 8:
+                    f.write('move(-20,50)\n')  # move 2cm backward
 
-            if loop_list[j] == 6:
-                f.write('i =0 \nwhile i < 2:\n\trotate(90,50)\nrotate(90,50)\n\ti=i+1\n') # u turn right
+                if id[i] == 11 and id[i + 1] == 9 or id[i] == 11 and id[i + 1] == 9:
+                    f.write('move(-50,50)\n')  # move 5cm backwards
 
-            j = j +1
+                if id[i] == 11 and id[i + 1] == 10 or id[i] == 11 and id[i + 1] == 10:
+                    f.write('move(-100,50)\n')  # move 10 cm backwards
 
-        while k <len(rest_list):
-            if rest_list[k] == 7 and rest_list[k+1] == 8 or rest_list[k] == 7 and rest_list[k+1] == 8:
-                f.write('move(20,50)\n') #move 2cm forward
-            k = k +1
+                if id[i] == 12 and id[i+1] == 8 or id[i] == 12 and id[i+1] == 8: #loop with 2 repetitions
+                    end_index = id.index(14)
+                    loop_list = id[i+2:end_index]
+                    repetition = 2
+                    loop_function(loop_list, repetition)
+                    i = i + len(loop_list) + 2 # to move i index past the loop statements
 
+                if id[i] == 12 and id[i + 1] == 13 or id[i] == 13 and id[i + 1] == 12:  # loop with 3 repetitions
+                    end_index = id.index(14)
+                    loop_list = id[i + 2:end_index]
+                    rest_list = id[end_index+1:]
+                    repetition = 3
+                    loop_function(loop_list,repetition)
+                    i = i + len(loop_list) + 2  # to move i index past the loop statements
+                i = i +1
 
-
-
-
-
-
-
-
+        translate_ids(id)
 
         return file_name
-
-
-
-
-
-
 
 root = Tk()
 b = App(root)
